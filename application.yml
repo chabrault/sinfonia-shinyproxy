@@ -5,24 +5,34 @@ proxy:
   authentication: simple
   admin-groups: admins
   users:
-  - name: jack
-    password: password
+  - name: admin
+    password: vignevin
     groups: admins
-  - name: jeff
-    password: password
   docker:
       internal-networking: true
   specs:
   - id: 01_hello
-    display-name: Hello Application
+    display-name: Hello Application Again
     description: Application which demonstrates the basics of a Shiny app
     container-cmd: ["R", "-e", "shinyproxy::run_01_hello()"]
     container-image: openanalytics/shinyproxy-demo
-    container-network: sp-example-net
+    container-network: sinfonia-network
   - id: 06_tabsets
     container-cmd: ["R", "-e", "shinyproxy::run_06_tabsets()"]
     container-image: openanalytics/shinyproxy-demo
-    container-network: sp-example-net
+    container-network: sinfonia-network
+  - id: sinfonia_files_to_opensilex
+    container-cmd: ["R", "-e", "options('shiny.port'=3838,shiny.host='0.0.0.0');FilesToOpenSilex::run_app()"]
+    display-name: FilesToOpensilex
+    description: Mise au format Sinfonia ou VitisExplorer de données expérimentales
+    container-image: fto
+    container-network: sinfonia-network
+  - id: sinfonia_walis
+    display-name: WaLIS
+    description: Simulation du modèle de bilan hydrique du sol avec le modèle WaLIS
+    container-image: walis:latest
+    container-network: sinfonia-network
+
 
 logging:
   file:
